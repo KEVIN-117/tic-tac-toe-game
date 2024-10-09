@@ -9,8 +9,6 @@ export function Board() {
     const [xIsNext, setXisNext] = useState(true)
     const [tableValue, setTableValue] = useState(Array(9).fill(null))
     const [winner, setWinner] = useState<string | null>(null);
-
-
     useEffect(() => {
         const result = CalculateWinner(tableValue);
         if (result) setWinner(result);
