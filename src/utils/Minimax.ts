@@ -5,7 +5,7 @@ export function Minimax(board: (string | null)[], depth: number, isMaximizing: b
     const winner = CalculateWinner(board);
     if (winner === "X") return -10;
     if (winner === "O") return 10;
-    //if (isBoardFull(board)) return 0;
+    if (isBoardFull(board)) return 0;
 
     if (isMaximizing) {
         let bestScore = -Infinity;
@@ -31,3 +31,7 @@ export function Minimax(board: (string | null)[], depth: number, isMaximizing: b
         return bestScore;
     }
 };
+
+function isBoardFull(board: (string | null)[]) {
+    return board.every((square) => square !== null);
+}
