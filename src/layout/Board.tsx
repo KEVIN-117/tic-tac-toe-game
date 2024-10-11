@@ -51,7 +51,7 @@ export function Board() {
             <div className='space-y-3'>
                 <button className={`rounded-full bg-red-800/40 border border-red-800 px-4 py-2 text-xl font-bold uppercase w-full ${winner ? 'animate-bounce' : ''}`} onClick={resetGame}>{winner ? 'Iniciar nuevo Juego' : 'Reiniciar'}</button>
                 <div className="flex flex-col items-center justify-center bg-stone-900/40 text-gray-200 rounded-lg">
-                    {winner && <h2 className='text-4xl font-bold uppercase bg-clip-text text-transparent bg-gradient-to-r from-violet-500 to-[#0c4a6e]'>{winner === 'Tie' ? '¡Es un empate!' : `Ganador: ${winner}`}</h2>}
+                    {winner && <h2 className='text-4xl font-bold uppercase bg-clip-text text-violet-500'>{winner === 'Tie' ? '¡Es un empate!' : `Ganador: ${winner}`}</h2>}
                     <div className="grid grid-cols-3 gap-2 p-4 bg-stone-900/40 rounded-lg shadow-lg">
                         {Array(9).fill(null).map((_, index) => (
                             <Square key={index} value={tableValue[index]} onSquareClick={() => { handleClick(index) }} />
