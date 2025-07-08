@@ -330,54 +330,85 @@ export default function Tetris() {
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"></div>
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
             <div className="relative z-10">
-                <div className="backdrop-blur-xl bg-white/5 p-8 rounded-3xl shadow-2xl border border-white/10 relative overflow-hidden">
+                <div className="flex items-center gap-4 backdrop-blur-xl bg-white/5 p-8 rounded-3xl shadow-2xl border border-white/10 relative overflow-hidden">
+                    <div className="z-10 flex gap-4 mt-6">
+                        <Button
+                            onClick={resetGame}
+                            className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
+                        >
+                            {gameOver ? "Play Again" : "Reset Game"}
+                        </Button>
+                    </div>
                     {/* Efecto de brillo interno */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent rounded-3xl"></div>
 
-                    <div
-                        className="grid bg-black/20 backdrop-blur-sm relative z-10 rounded-2xl overflow-hidden border border-cyan-500/30"
-                        style={{
-                            gridTemplateColumns: `repeat(${BOARD_WIDTH}, 1fr)`,
-                            width: `${BOARD_WIDTH * 24}px`,
-                            height: `${BOARD_HEIGHT * 24}px`,
-                            boxShadow: "inset 0 0 50px rgba(6, 182, 212, 0.1)",
-                        }}
-                    >
-                        {board.map((row, y) =>
-                            row.map((_, x) => (
-                                <AnimatePresence key={`${y}-${x}`}>
-                                    <motion.div
-                                        initial={false}
-                                        animate={{
-                                            opacity: completedRows.includes(y) ? 0 : 1,
-                                            scale: completedRows.includes(y) ? 1.2 : 1,
-                                            rotateZ: completedRows.includes(y) ? 180 : 0,
-                                        }}
-                                        transition={{
-                                            duration: 0.6,
-                                            ease: "easeInOut",
-                                            opacity: { duration: 0.3 },
-                                            scale: { duration: 0.4 },
-                                            rotateZ: { duration: 0.5 },
-                                        }}
-                                        className={`w-6 h-6 relative text-center ${renderCell(x, y) ? `bg-gradient-to-br ${renderCell(x, y)} shadow-lg` : "bg-gray-900/30"
-                                            }`}
-                                        style={{
-                                            border: renderCell(x, y)
-                                                ? "1px solid rgba(255, 255, 255, 0.2)"
-                                                : "1px solid rgba(255, 255, 255, 0.05)",
-                                            boxShadow: renderCell(x, y)
-                                                ? "inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 10px rgba(6, 182, 212, 0.3)"
-                                                : "none",
-                                        }}
-                                    >
-                                        {renderCell(x, y) && (
-                                            <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-sm"></div>
-                                        )}
-                                    </motion.div>
-                                </AnimatePresence>
-                            )),
+                    <div>
+                        {gameOver && (
+                            <motion.div
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="text-xl font-bold text-center text-red-400 drop-shadow-2xl backdrop-blur-sm bg-red-500/10 p-2 rounded-2xl border border-red-500/30 mb-2"
+                            >
+                                GAME OVER!
+                            </motion.div>
                         )}
+                        <div
+                            className="grid bg-black/20 backdrop-blur-sm relative z-10 rounded-2xl overflow-hidden border border-cyan-500/30"
+                            style={{
+                                gridTemplateColumns: `repeat(${BOARD_WIDTH}, 1fr)`,
+                                width: `${BOARD_WIDTH * 24}px`,
+                                height: `${BOARD_HEIGHT * 24}px`,
+                                boxShadow: "inset 0 0 50px rgba(6, 182, 212, 0.1)",
+                            }}
+                        >
+
+                            {board.map((row, y) =>
+                                row.map((_, x) => (
+                                    <AnimatePresence key={`${y}-${x}`}>
+                                        <motion.div
+                                            initial={false}
+                                            animate={{
+                                                opacity: completedRows.includes(y) ? 0 : 1,
+                                                scale: completedRows.includes(y) ? 1.2 : 1,
+                                                rotateZ: completedRows.includes(y) ? 180 : 0,
+                                            }}
+                                            transition={{
+                                                duration: 0.6,
+                                                ease: "easeInOut",
+                                                opacity: { duration: 0.3 },
+                                                scale: { duration: 0.4 },
+                                                rotateZ: { duration: 0.5 },
+                                            }}
+                                            className={`w-6 h-6 relative text-center ${renderCell(x, y) ? `bg-gradient-to-br ${renderCell(x, y)} shadow-lg` : "bg-gray-900/30"
+                                                }`}
+                                            style={{
+                                                border: renderCell(x, y)
+                                                    ? "1px solid rgba(255, 255, 255, 0.2)"
+                                                    : "1px solid rgba(255, 255, 255, 0.05)",
+                                                boxShadow: renderCell(x, y)
+                                                    ? "inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 0 10px rgba(6, 182, 212, 0.3)"
+                                                    : "none",
+                                            }}
+                                        >
+                                            {renderCell(x, y) && (
+                                                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-sm"></div>
+                                            )}
+                                        </motion.div>
+                                    </AnimatePresence>
+                                )),
+                            )}
+                        </div>
+                    </div>
+
+                    <div className="flex gap-4 mt-6">
+                        <Button
+                            onClick={toggleMusic}
+                            disabled={gameOver}
+                            className="flex justify-center items-center bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
+                        >
+                            <Music className="w-4 h-4 mr-2" />
+                            {isMusicPlaying ? "Stop Music" : "Play Music"}
+                        </Button>
                     </div>
                 </div>
 
@@ -393,33 +424,6 @@ export default function Tetris() {
 
                     <div className="text-sm text-gray-300 backdrop-blur-sm bg-white/5 px-4 py-2 rounded-full border border-white/10">
                         Press ↑ to rotate • ←→ to move • ↓ to drop
-                    </div>
-
-                    {gameOver && (
-                        <motion.div
-                            initial={{ scale: 0, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            className="text-3xl font-bold text-red-400 drop-shadow-2xl backdrop-blur-sm bg-red-500/10 px-6 py-3 rounded-2xl border border-red-500/30"
-                        >
-                            GAME OVER!
-                        </motion.div>
-                    )}
-
-                    <div className="flex gap-4 mt-6">
-                        <Button
-                            action={resetGame}
-                            className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700"
-                            gameOver={gameOver}
-                        >
-                            {gameOver ? "Play Again" : "Reset Game"}
-                        </Button>
-                        <Button
-                            action={toggleMusic}
-                            className="bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700"
-                        >
-                            <Music className="w-4 h-4 mr-2" />
-                            {isMusicPlaying ? "Stop Music" : "Play Music"}
-                        </Button>
                     </div>
                 </div>
             </div>
